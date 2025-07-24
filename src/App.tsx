@@ -36,61 +36,11 @@ function App() {
         setGeojsonData(geojson);
 
         console.log("GeoJSON data fetched:", geojson);
-        // const velocities = geojson.features
-        //   .map((f: Feature<Geometry, PropertiesType>) => f.properties?.velocity)
-        //   .filter((v: number) => !isNaN(v))
-        //   .sort((a: number, b: number) => a - b);
-
-        // // Compute quantiles (e.g., 25%, 50%, 75%)
-        // const q1 = velocities[Math.floor(velocities.length * 0.25)];
-        // const q2 = velocities[Math.floor(velocities.length * 0.5)];
-        // const q3 = velocities[Math.floor(velocities.length * 0.75)];
-        // setQuantiles([q1, q2, q3]);
 
         setQuantiles(geojson.properties.quantiles || []);
         console.log("Quantiles computed:", geojson.properties.quantiles);
       });
   }, []);
-
-  // const layer = useMemo(() =>
-  //   new GeoJsonLayer({
-  //     id: 'geojson',
-  //     data: geojsonData,
-  //     pointType: 'circle',
-  //     getFillColor: (f: Feature<Geometry, PropertiesType>) => {
-  //       const velocity = Array.isArray(f.properties?.velocity)
-  //         ? f.properties.velocity.map((v: number) => v)
-  //         : [];
-  //       if (!velocity) return [160, 160, 180, 200];
-  //       const speed = Array.isArray(velocity)
-  //         ? velocity.reduce((sum: number, v: number) => sum + v, 0)
-  //         : parseFloat(velocity as string);
-  //       // console.log("Speed: ", speed, "velocity: ", velocity);
-  //       if (speed < quantiles[0]) return [0, 0, 255, 200];      // 0-25%: Blue
-  //       if (speed < quantiles[1]) return [0, 255, 0, 200];      // 25-50%: Green
-  //       if (speed < quantiles[2]) return [255, 255, 0, 200];    // 50-75%: Yellow
-  //       return [255, 0, 0, 200];                                // 75-100%: Red
-  //     },
-  //     getPointRadius: 100,
-  //     stroked: true,
-  //     getLineColor: (f: Feature<Geometry, PropertiesType>) => {
-  //       const velocity = f.properties?.velocity;
-  //       if (!velocity || quantiles.length < 3) return [160, 160, 180, 200];
-  //       const speed = velocity;
-  //       if (speed < quantiles[0]) return [0, 0, 255, 200];      // 0-25%: Blue
-  //       if (speed < quantiles[1]) return [0, 255, 0, 200];      // 25-50%: Green
-  //       if (speed < quantiles[2]) return [255, 255, 0, 200];    // 50-75%: Yellow
-  //       return [255, 0, 0, 200];                                // 75-100%: Red
-  //     },
-  //     getLineWidth: 1,
-  //     filled: true,
-  //     getFilterValue: (f: Feature<Geometry, PropertiesType>) => f.properties?.timestamp,
-  //     filterRange: [8999, 9001],
-  //     extensions: [new DataFilterExtension({
-  //       filterSize: 1
-  //     })],
-  //   }), [quantiles, geojsonData]
-  // );
 
   const pointLayer = useMemo(() => {
     // console.log(" use memo sliderIndex:", sliderIndex);

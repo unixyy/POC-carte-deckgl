@@ -1,54 +1,46 @@
-# React + TypeScript + Vite
+# Documentation pour l'ajout de données GeoJSON et l'exécution du projet
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Ajouter des données GeoJSON
 
-Currently, two official plugins are available:
+un fichier d'exemple vous est fourni dans le projet au à l'emplacement suivant :
+`src/assets/points_v4_allveltime.geojson`
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Placez votre fichier GeoJSON dans le dossier `src/assets` du projet React.  
+  Exemple : `src/assets/points_v4_allveltime.geojson`
 
-## Expanding the ESLint configuration
+2. Dans le fichier `App.tsx`, modifiez le fonctionnement du `useEffect` pour charger le fichier GeoJSON :
+  ```js
+    useEffect(() => {
+    fetch("/points_v4_allveltime.geojson")
+      .then((res) => res.json())
+      .then((geojson) => {
+        setGeojsonData(geojson);
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+        console.log("GeoJSON data fetched:", geojson);
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+        setQuantiles(geojson.properties.quantiles || []);
+        console.log("Quantiles computed:", geojson.properties.quantiles);
+      });
+  }, []);
+  ```
+## Exécuter le projet
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+le projet utilise Vite pour le développement. Voici les étapes pour, et à utilisé bun.sh comme gestionnaire de paquets. néanmoins vous pouvez utiliser npm pour le faire fonctionner
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1. Installez les dépendances du projet :
+  ```bash
+  npm install
+  ```
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+2. Lancez le serveur de développement :
+  ```bash
+  npm run dev
+  ```
+
+3. Accédez à l'application dans votre navigateur à l'adresse [http://localhost:5173](http://localhost:5173).
+
+---
+**Remarque :**  
+Assurez-vous que le nom du fichier dans le dossier `public` correspond exactement à celui utilisé dans la fonction `fetch`.
+
+Il est important de noter que la Preuve de Concept (POC) ici présente est adaptés aux données GeoJSON fournies dans ``src/assets/points_v4_allveltime.geojson``. Pour utiliser d'autres données GeoJSON, il faudra adapter le code présent dans `App.tsx` pour correspondre à la structure de vos données.
