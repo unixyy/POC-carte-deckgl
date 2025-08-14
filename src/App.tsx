@@ -10,7 +10,6 @@ import DeckGL, { GeoJsonLayer, PickingInfo } from "deck.gl";
 import { useCallback, useEffect } from "react";
 import type { Feature, Geometry } from "geojson";
 import { useMemo, useState } from "react";
-import { DataFilterExtension } from "@deck.gl/extensions";
 import { Slider } from "@mui/material";
 
 type PropertiesType = {
@@ -23,8 +22,6 @@ function App() {
   const [quantiles, setQuantiles] = useState<number[][]>([[]]);
   // State to store the fetched geojson data
   const [geojsonData, setGeojsonData] = useState<any>(null);
-
-  const [geojsonAssembled, setgeojsonAssembled] = useState<any>(null);
 
   const [sliderIndex, setSliderIndex] = useState<number>(0);
 
