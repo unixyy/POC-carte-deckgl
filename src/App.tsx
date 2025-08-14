@@ -23,7 +23,7 @@ function App() {
   // State to store the fetched geojson data
   const [geojsonData, setGeojsonData] = useState<any>(null);
 
-  const [sliderIndex, setSliderIndex] = useState<number>(0);
+  const [sliderIndex, setSliderIndex] = useState<number>(1);
 
   // Fetch and compute quantiles once, and store geojson data
   useEffect(() => {
